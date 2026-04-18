@@ -1,64 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <style>
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #fdf5f6; margin: 0; font-family: sans-serif; }
-        .player-card { background-color: #f1d3d6; width: 300px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .art-box { width: 100%; height: 150px; background-color: #ffffff; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #6a3a3a; font-weight: bold; }
-        input[type=range] { width: 100%; height: 6px; cursor: pointer; accent-color: #6a3a3a; margin-top: 10px; }
-        /* اسم آهنگ زیر نوار پیشرفت */
-        #songTitle { color: #6a3a3a; font-size: 14px; font-weight: bold; margin-top: 5px; text-align: center; }
-        .controls { display: flex; justify-content: center; align-items: center; gap: 25px; width: 100%; margin-top: 10px; }
-        .btn { background: none; border: none; cursor: pointer; font-size: 35px; color: #6a3a3a; }
+        body { 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; background-color: #fdf5f6; margin: 0; 
+        }
+        .player-card { 
+            background-color: #f1d3d6; width: 350px; padding: 20px; 
+            border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        /* این استایل باعث میشه پلیر اسپاتیفای توی کادر قشنگ بشینه */
+        iframe { border-radius: 12px; display: block; }
     </style>
 </head>
 <body>
 
 <div class="player-card">
-    <div class="art-box">Monica's Pie</div>
-    <input type="range" id="seekBar" value="0" min="0" max="100">
-    <div id="songTitle">Loading...</div> <audio id="audioPlayer"></audio>
-    <div class="controls">
-        <button class="btn" onclick="prev()">⏮</button>
-        <button class="btn" id="playBtn" onclick="toggle()">▶</button>
-        <button class="btn" onclick="next()">⏭</button>
-    </div>
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4rsZLZg5ufqKj4mBrTaxYu?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 
-<script>
-    const audio = document.getElementById("audioPlayer");
-    const playBtn = document.getElementById("playBtn");
-    const title = document.getElementById("songTitle");
-
-    const playlist = [
-        { name: "Lonesome Journey", url: "https://docs.google.com/uc?export=download&id=1noFjtN3kkWN1II5QQCx01dQGSjFtikzY" },
-        { name: "The Travelling Symphony", url: "https://docs.google.com/uc?export=download&id=1OiveloD9Gy7VPXx0rkK7cmlvnLFOHYc6" },
-        { name: "In The Desert", url: "https://docs.google.com/uc?export=download&id=1V_HT72sPUWS5Bwob-byeN8dxc78_GwPx" },
-        { name: "Herbal Tea", url: "https://docs.google.com/uc?export=download&id=1CK-jYpMZDGoVU8KzLcHTlM20yZED4aPR" }
-    ];
-    
-    let i = 0;
-
-    function loadTrack(index) {
-        audio.src = playlist[index].url;
-        title.innerText = playlist[index].name;
-    }
-
-    loadTrack(i);
-
-    function toggle() {
-        if (audio.paused) {
-            audio.play().catch(e => console.log("خطا در پخش:", e));
-            playBtn.textContent = "⏸";
-        } else {
-            audio.pause();
-            playBtn.textContent = "▶";
-        }
-    }
-
-    function next() { i = (i + 1) % playlist.length; loadTrack(i); audio.play(); playBtn.textContent = "⏸"; }
-    function prev() { i = (i - 1 + playlist.length) % playlist.length; loadTrack(i); audio.play(); playBtn.textContent = "⏸"; }
-</script>
 </body>
 </html>
