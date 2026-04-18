@@ -5,7 +5,7 @@
     <style>
         body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #fdf5f6; margin: 0; font-family: sans-serif; }
         .player-card { background-color: #f1d3d6; width: 300px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .art-box { width: 100%; height: 200px; background-color: #ffffff; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #6a3a3a; font-weight: bold; }
+        .art-box { width: 100%; height: 200px; background-color: #ffffff; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #6a3a3a; font-weight: bold; text-align: center; padding: 10px; }
         input[type=range] { width: 100%; height: 6px; cursor: pointer; accent-color: #6a3a3a; }
         .controls { display: flex; justify-content: center; align-items: center; gap: 25px; width: 100%; }
         .btn { background: none; border: none; cursor: pointer; font-size: 35px; color: #6a3a3a; }
@@ -14,7 +14,7 @@
 <body>
 
 <div class="player-card">
-    <div class="art-box">Monica's Pie Music</div>
+    <div class="art-box" id="songTitle">Monica's Pie Music</div>
     <audio id="audioPlayer"></audio>
     <input type="range" id="seekBar" value="0" min="0" max="100">
     <div class="controls">
@@ -27,15 +27,22 @@
 <script>
     const audio = document.getElementById("audioPlayer");
     const playBtn = document.getElementById("playBtn");
-    // لینک‌های مستقیم گوگل درایو
+    const title = document.getElementById("songTitle");
+
     const playlist = [
-        "https://docs.google.com/uc?export=download&id=1noFjtN3kkWN1II5QQCx01dQGSjFtikzY",
-        "https://docs.google.com/uc?export=download&id=1OiveloD9Gy7VPXx0rkK7cmlvnLFOHYc6",
-        "https://docs.google.com/uc?export=download&id=1V_HT72sPUWS5Bwob-byeN8dxc78_GwPx",
-        "https://docs.google.com/uc?export=download&id=1CK-jYpMZDGoVU8KzLcHTlM20yZED4aPR"
+        { name: "Lonesome Journey", url: "https://docs.google.com/uc?export=download&id=1noFjtN3kkWN1II5QQCx01dQGSjFtikzY" },
+        { name: "The Travelling Symphony", url: "https://docs.google.com/uc?export=download&id=1OiveloD9Gy7VPXx0rkK7cmlvnLFOHYc6" },
+        { name: "In The Desert", url: "https://docs.google.com/uc?export=download&id=1V_HT72sPUWS5Bwob-byeN8dxc78_GwPx" },
+        { name: "Herbal Tea", url: "https://docs.google.com/uc?export=download&id=1CK-jYpMZDGoVU8KzLcHTlM20yZED4aPR" }
     ];
+    
     let i = 0;
-    audio.src = playlist[i];
+    function loadTrack(index) {
+        audio.src = playlist[index].url;
+        title.innerText = playlist[index].name;
+    }
+
+    loadTrack(i);
 
     function toggle() {
         if (audio.paused) {
@@ -45,8 +52,9 @@
             playBtn.textContent = "▶";
         }
     }
-    function next() { i = (i + 1) % playlist.length; audio.src = playlist[i]; audio.play().then(() => playBtn.textContent = "⏸"); }
-    function prev() { i = (i - 1 + playlist.length) % playlist.length; audio.src = playlist[i]; audio.play().then(() => playBtn.textContent = "⏸"); }
+
+    function next() { i = (i + 1) % playlist.length; loadTrack(i); audio.play(); playBtn.textContent = "⏸"; }
+    function prev() { i = (i - 1 + playlist.length) % playlist.length; loadTrack(i); audio.play(); playBtn.textContent = "⏸"; }
 </script>
 </body>
 </html>
