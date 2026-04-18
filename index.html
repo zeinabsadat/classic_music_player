@@ -2,22 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Bennet Sisters Library</title>
     <style>
+        /* استفاده از فونت کلاسیک برای حال‌وهوای کتابخانه‌ای */
         body { 
             display: flex; justify-content: center; align-items: center; 
             height: 100vh; background-color: #fdf5f6; margin: 0; 
+            font-family: 'Georgia', serif; 
         }
+        
         .player-card { 
-            background-color: #f1d3d6; width: 350px; padding: 20px; 
-            border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background-color: #fdf5f6; /* رنگ کرم ملایم */
+            width: 340px; 
+            padding: 20px; 
+            border-radius: 20px; 
+            border: 1px solid #dcd3d3; /* کادر کلاسیک */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center;
         }
-        /* این استایل باعث میشه پلیر اسپاتیفای توی کادر قشنگ بشینه */
-        iframe { border-radius: 12px; display: block; }
+
+        h2 { color: #6a3a3a; font-size: 18px; margin-bottom: 15px; font-weight: normal; }
+
+        iframe { 
+            border-radius: 15px; /* گوشه‌های گرد برای حسِ نرم‌تر */
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
 <div class="player-card">
+    <h2>Bennet Sisters Library</h2>
+    
     <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4rsZLZg5ufqKj4mBrTaxYu?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 
