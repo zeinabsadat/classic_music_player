@@ -4,43 +4,21 @@
     <meta charset="UTF-8">
     <style>
         body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #fdf5f6; margin: 0; }
-        
-        .player-card {
-            background-color: #f1d3d6; width: 320px; padding: 30px;
-            border-radius: 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            display: flex; flex-direction: column; align-items: center; gap: 25px;
-        }
-
-        .art-box {
-            width: 100%; height: 220px; background-color: #ffffff;
-            border-radius: 25px; display: flex; justify-content: center;
-            align-items: center; color: #888; font-weight: bold;
-        }
-
-        /* نوار پیشرفت */
-        input[type=range] { width: 100%; height: 6px; cursor: pointer; accent-color: #6a3a3a; }
-
-        .time-box { display: flex; justify-content: space-between; width: 100%; color: #6a3a3a; font-size: 14px; }
-
-        /* بخش دکمه‌های بزرگ و هماهنگ */
-        .controls { display: flex; justify-content: center; align-items: center; gap: 40px; width: 100%; }
-        
-        .btn { 
-            background: none; border: none; cursor: pointer; 
-            font-size: 40px; color: #6a3a3a; transition: transform 0.2s;
-        }
-        .btn:hover { transform: scale(1.1); }
-        .play-btn { font-size: 50px; } /* دکمه وسط بزرگتر */
+        .player-card { background-color: #f1d3d6; width: 320px; padding: 30px; border-radius: 40px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .art-box { width: 100%; height: 200px; background-color: #ffffff; border-radius: 25px; display: flex; justify-content: center; align-items: center; color: #6a3a3a; font-weight: bold; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: #6a3a3a; }
+        .time-box { display: flex; justify-content: space-between; width: 100%; color: #6a3a3a; font-size: 13px; }
+        .controls { display: flex; justify-content: center; align-items: center; gap: 35px; width: 100%; }
+        .btn { background: none; border: none; cursor: pointer; font-size: 45px; color: #6a3a3a; }
     </style>
 </head>
 <body>
 
 <div class="player-card">
     <div class="art-box">Beethoven for Reading</div>
-    
-    <audio id="audioPlayer"></audio>
+    <audio id="audioPlayer" preload="auto"></audio>
 
-    <input type="range" id="seekBar" value="0">
+    <input type="range" id="seekBar" value="0" min="0" max="100">
     <div class="time-box">
         <span id="curr">0:00</span>
         <span id="dur">0:00</span>
@@ -48,7 +26,7 @@
     
     <div class="controls">
         <button class="btn" onclick="prevTrack()">⏮</button>
-        <button class="btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+        <button class="btn" id="playBtn" onclick="togglePlay()">▶</button>
         <button class="btn" onclick="nextTrack()">⏭</button>
     </div>
 </div>
@@ -57,17 +35,19 @@
     const audio = document.getElementById("audioPlayer");
     const playBtn = document.getElementById("playBtn");
     
-    // لینک‌های مستقیم و تست شده
+    // لینک‌های مستقیم از آرشیو موسیقی کلاسیک (این‌ها بسیار پایدار هستند)
     const playlist = [
-        "https://ia800305.us.archive.org/29/items/BeethovenPianoSonataNo.14Moonlight1stMvt/Beethoven-Moonlight-Sonata-1st-Mvt.mp3",
-        "https://ia800201.us.archive.org/30/items/BeethovenPathetiqueSonata2ndMvt/Beethoven-Pathetique-Sonata-2nd-Mvt.mp3"
+        "https://upload.wikimedia.org/wikipedia/commons/e/e0/Beethoven_Moonlight_1st_movement.ogg",
+        "https://upload.wikimedia.org/wikipedia/commons/d/d8/Beethoven_Pathetique_2nd_movement.ogg"
     ];
     let i = 0;
 
+    // بارگذاری اولیه
+    audio.src = playlist[i];
+
     function togglePlay() {
         if (audio.paused) {
-            audio.src = playlist[i];
-            audio.play();
+            audio.play().catch(e => alert("Please click to start playback"));
             playBtn.textContent = "⏸";
         } else {
             audio.pause();
@@ -89,13 +69,19 @@
         playBtn.textContent = "⏸";
     }
 
-    // به‌روزرسانی نوار و زمان
     audio.ontimeupdate = () => {
-        document.getElementById("seekBar").value = (audio.currentTime / audio.duration) * 100;
-        document.getElementById("curr").innerText = Math.floor(audio.currentTime/60) + ":" + Math.floor(audio.currentTime%60).toString().padStart(2, '0');
-        document.getElementById("dur").innerText = Math.floor(audio.duration/60) + ":" + Math.floor(audio.duration%60).toString().padStart(2, '0');
+        if(audio.duration) {
+            document.getElementById("seekBar").value = (audio.currentTime / audio.duration) * 100;
+            document.getElementById("curr").innerText = formatTime(audio.currentTime);
+            document.getElementById("dur").innerText = formatTime(audio.duration);
+        }
     };
-</script>
 
+    function formatTime(s) {
+        let m = Math.floor(s/60);
+        let sec = Math.floor(s%60).toString().padStart(2, '0');
+        return m + ":" + sec;
+    }
+</script>
 </body>
 </html>
