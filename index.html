@@ -7,7 +7,6 @@
         .player-card { background-color: #f1d3d6; width: 300px; padding: 25px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .art-box { width: 100%; height: 200px; background-color: #ffffff; border-radius: 20px; display: flex; justify-content: center; align-items: center; color: #6a3a3a; font-weight: bold; }
         input[type=range] { width: 100%; height: 6px; cursor: pointer; accent-color: #6a3a3a; }
-        .time-box { display: flex; justify-content: space-between; width: 100%; color: #6a3a3a; font-size: 12px; }
         .controls { display: flex; justify-content: center; align-items: center; gap: 25px; width: 100%; }
         .btn { background: none; border: none; cursor: pointer; font-size: 35px; color: #6a3a3a; }
     </style>
@@ -17,65 +16,37 @@
 <div class="player-card">
     <div class="art-box">Monica's Pie Music</div>
     <audio id="audioPlayer"></audio>
-
     <input type="range" id="seekBar" value="0" min="0" max="100">
-    <div class="time-box">
-        <span id="curr">0:00</span>
-        <span id="dur">0:00</span>
-    </div>
-    
     <div class="controls">
-        <button class="btn" onclick="prevTrack()">⏮</button>
-        <button class="btn" id="playBtn" onclick="togglePlay()">▶</button>
-        <button class="btn" onclick="nextTrack()">⏭</button>
+        <button class="btn" onclick="prev()">⏮</button>
+        <button class="btn" id="playBtn" onclick="toggle()">▶</button>
+        <button class="btn" onclick="next()">⏭</button>
     </div>
 </div>
 
 <script>
     const audio = document.getElementById("audioPlayer");
     const playBtn = document.getElementById("playBtn");
-    const playlist = ["HerbalTea.mp3", "InTheDesert.mp3", "LonesomeJourney.mp3", "TheTravellingSymphony.mp3"];
+    // لینک‌های مستقیم گوگل درایو
+    const playlist = [
+        "https://docs.google.com/uc?export=download&id=1noFjtN3kkWN1II5QQCx01dQGSjFtikzY",
+        "https://docs.google.com/uc?export=download&id=1OiveloD9Gy7VPXx0rkK7cmlvnLFOHYc6",
+        "https://docs.google.com/uc?export=download&id=1V_HT72sPUWS5Bwob-byeN8dxc78_GwPx",
+        "https://docs.google.com/uc?export=download&id=1CK-jYpMZDGoVU8KzLcHTlM20yZED4aPR"
+    ];
     let i = 0;
-
     audio.src = playlist[i];
 
-    function togglePlay() {
+    function toggle() {
         if (audio.paused) {
-            // حذف دستور alert برای رفع مزاحمت
-            audio.play().then(() => {
-                playBtn.textContent = "⏸";
-            });
+            audio.play().then(() => playBtn.textContent = "⏸");
         } else {
             audio.pause();
             playBtn.textContent = "▶";
         }
     }
-
-    function nextTrack() {
-        i = (i + 1) % playlist.length;
-        audio.src = playlist[i];
-        audio.play().then(() => playBtn.textContent = "⏸");
-    }
-
-    function prevTrack() {
-        i = (i - 1 + playlist.length) % playlist.length;
-        audio.src = playlist[i];
-        audio.play().then(() => playBtn.textContent = "⏸");
-    }
-
-    audio.ontimeupdate = () => {
-        if (!isNaN(audio.duration)) {
-            document.getElementById("seekBar").value = (audio.currentTime / audio.duration) * 100;
-            document.getElementById("curr").innerText = formatTime(audio.currentTime);
-            document.getElementById("dur").innerText = formatTime(audio.duration);
-        }
-    };
-
-    function formatTime(s) {
-        let m = Math.floor(s / 60);
-        let sec = Math.floor(s % 60).toString().padStart(2, '0');
-        return m + ":" + sec;
-    }
+    function next() { i = (i + 1) % playlist.length; audio.src = playlist[i]; audio.play().then(() => playBtn.textContent = "⏸"); }
+    function prev() { i = (i - 1 + playlist.length) % playlist.length; audio.src = playlist[i]; audio.play().then(() => playBtn.textContent = "⏸"); }
 </script>
 </body>
 </html>
